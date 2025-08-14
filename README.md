@@ -6,7 +6,7 @@ Aplicação de RAG (Retrieval-Augmented Generation) que permite ao usuário envi
 ---
 
 ## Demonstração do Fluxo
-![Fluxo do Sistema](exemplo_funcional/video_diagram.gif)
+![Fluxo do Sistema](exemplo_funcional/gif_diagram.gif)
 
 ## Interface Web
 ![Interface Web](exemplo_funcional/gif_funcional.gif)
