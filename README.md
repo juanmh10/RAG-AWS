@@ -23,25 +23,6 @@ Fluxo lógico do projeto:
 - O modelo em Bedrock (Claude) consulta os vetores para busca semântica e responde.
 - A resposta é retornada pela EC2 ao usuário.
 
-Diagrama (Mermaid):
-```mermaid
-flowchart LR
-  subgraph AWS["AWS - us-east-1"]
-    subgraph EC2SG["EC2 / App"]
-      UQ[[Usuário INPUT]]
-      EC2[EC2 API/App]
-      UO[[Usuário OUTPUT]]
-    end
-
-    S3DOCS[(S3 - docs/PDF)]
-    S3VEC[(S3 Vectors - vector-index)]
-
-    subgraph BEDROCK["Bedrock"]
-      TITAN[Titan Embeddings]
-      KB[Knowledge Base / Retrieve]
-      LLM[Modelo (ex: Claude em Bedrock)]
-    end
-  end
 
   %% fluxo
   UQ --> EC2
@@ -54,7 +35,6 @@ flowchart LR
   KB -- "chunks relevantes" --> LLM
   LLM -- "resposta" --> EC2
   EC2 --> UO
-```
 
 ---
 
