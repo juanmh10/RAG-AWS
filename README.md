@@ -3,6 +3,16 @@
 
 Aplicação de RAG (Retrieval-Augmented Generation) que permite ao usuário enviar um PDF e fazer perguntas com respostas fundamentadas no conteúdo do documento. A solução roda em uma instância EC2 e utiliza Amazon S3 para persistência, Amazon Bedrock para embeddings e LLM, e FAISS como mecanismo de busca vetorial.
 
+---
+
+## Demonstração do Fluxo
+![Fluxo do Sistema](exemplo_funcional/video_diagram.gif)
+
+## Interface Web
+![Interface Web](exemplo_funcional/gif_funcional.gif)
+
+---
+
 - Linguagem: Python 3.11+
 - Backend: Flask
 - Frontend: HTML/CSS/JS estático
