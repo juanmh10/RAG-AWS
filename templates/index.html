@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG com AWS | Chat Híbrido</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" href="https://a0.awsstatic.com/libra-css/images/site/fav/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <div id="chat-container">
+        <header>
+            <div class="header-left">
+                <div class="title-group">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21.44,11.06a9.5,9.5,0,0,0-18.88,0,9.48,9.48,0,0,0,1.6,5.25,9.5,9.5,0,0,0,15.68,0,9.48,9.48,0,0,0,1.6-5.25Zm-11,5.44a.69.69,0,0,1-.48.2.71.71,0,0,1-.48-.2L5.32,12.34a.69.69,0,0,1,0-1l4.16-4.16a.7.7,0,0,1,1,0l4.16,4.16a.7.7,0,0,1,0,1Z" fill="#FF9900"></path><path d="M18.68,16.32a9.5,9.5,0,0,0,1.6-5.26,9.34,9.34,0,0,0-.08-1.21,8.53,8.53,0,0,0-4.47-4.47,9.34,9.34,0,0,0-1.21-.08,9.5,9.5,0,0,0-5.26,1.6,8.53,8.53,0,0,0-4.47,4.47,9.34,9.34,0,0,0-.08,1.21,9.5,9.5,0,0,0,1.6,5.26,8.53,8.53,0,0,0,4.47,4.47,9.34,9.34,0,0,0,1.21.08,9.5,9.5,0,0,0,5.26-1.6,8.53,8.53,0,0,0,4.47-4.47,9.34,9.34,0,0,0,.08-1.21Z" fill="#232F3E"></path></svg>
+                    <h1>RAG com AWS</h1>
+                </div>
+            </div>
+            <div class="header-right">
+                <div id="session-status" class="status-badge">Índice padrão</div>
+                <input type="file" id="file-input" accept=".pdf" hidden>
+                <button id="upload-button" class="icon-button" title="Carregar PDF para esta sessão">
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm1 10V8h-2v4H8l4 4 4-4h-3z"></path></svg>
+                    </span>
+                    <div class="spinner"></div>
+                </button>
+                <button id="new-chat-button" class="icon-button" title="Nova Conversa (volta ao índice padrão)">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.00001C16.4184 4.00001 20 7.58173 20 12C20 16.4184 16.4184 20 12 20C7.58173 20 4 16.4184 4 12C4 9.47364 5.18104 7.22037 6.94768 5.78395L12 10.8363V4.00001Z"></path></svg>
+                </button>
+                <button id="theme-toggle" class="icon-button" title="Alternar tema">
+                    <svg id="theme-icon-light" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 010 1.06l-1.591 1.59a.75.75 0 11-1.06-1.06l1.59-1.59a.75.75 0 011.061 0zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zM17.894 17.894a.75.75 0 011.06 0l1.59 1.591a.75.75 0 11-1.06 1.06l-1.59-1.59a.75.75 0 010-1.061zM12 18.75a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0v-2.25a.75.75 0 01.75-.75zM5.106 17.894a.75.75 0 010-1.06l1.59-1.591a.75.75 0 111.06 1.06l-1.59 1.59a.75.75 0 01-1.06 0zM4.5 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H5.25a.75.75 0 01-.75-.75zM6.106 5.106a.75.75 0 011.06 0l1.591 1.59a.75.75 0 01-1.06 1.06L5.106 6.167a.75.75 0 010-1.06z"></path></svg>
+                    <svg id="theme-icon-dark" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.472-.948.75.75 0 01.818.162.75.75 0 01.162.819A10.5 10.5 0 119.528 1.718z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+        </header>
+        <main id="message-list-container">
+            <div id="message-list"></div>
+        </main>
+    </div>
+    <div id="chat-form-container">
+        <div id="form-wrapper">
+            <div id="char-counter-container">
+                <span id="char-counter">0</span> / 250
+            </div>
+            <form id="chat-form">
+                <textarea id="question-input" placeholder="Faça uma pergunta..." rows="1" maxlength="250"></textarea>
+                <button id="send-button" type="submit" title="Enviar pergunta">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.478 2.405a.75.75 0 00-.926.94l2.432 7.905H13.5a.75.75 0 010 1.5H4.984l-2.432 7.905a.75.75 0 00.926.94 60.519 60.519 0 0018.445-8.986.75.75 0 000-1.218A60.517 60.517 0 003.478 2.405z"></path></svg>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="toast"></div>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
